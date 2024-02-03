@@ -1,14 +1,20 @@
-import express from "express"
-import cors from "cors"
+import express, { request, response } from "express"
+import sequelize from "./src/database/sequelize.js"
+import User from "./src/models/user.js"
 
 const app = express()
-app.use(express.json()) //Configura para aceitar / receber / ler dados
-app.use(cors()) //Middleware para controlar requisições
+const router = express.Router()
 
-app.get("/", (request, response) => {
-    return response.json('Resposta do servidor')
+router.get("/", async (request, response) => {
+
+    // await User.create({name: "Hérika", lastname: "Felipe"});
+    const users = await User.findByPk(2)
+
+    return response.json(users)
 })
 
-app.listen(4000, () => {
+app.use(router)
+
+app.listen(4000, async () => {
     console.log('Servidor funcionando!')
 })
